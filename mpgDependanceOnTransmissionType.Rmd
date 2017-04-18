@@ -30,6 +30,43 @@ Was the report done in Rmd (knitr)? -->
 
 ## Executive Summary
 
+## stuff
+quick summary
+```{r}
+library(ggplot)
+str(mtcars)
+
+h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(cyl))) + geom_point(size=2) 
+print(h)
+
+```
+
+mainly interested in mpg vs am.
+
+consider mpg vs am
+mpg vs am + disp
+mpg vs am + disp + cyl
+mpg vs am + disp + cyl + wt
+
+```{r}
+fit<-lm(data=mtcars,mpg ~ factor(am))
+fit2<-lm(data=mtcars,mpg ~ factor(am) + disp   )
+fit3<-lm(data=mtcars,mpg ~ factor(am) + disp  + wt )
+```
+
+
+
+ <!-- [, 1]  mpg   Miles/(US) gallon                        
+       [, 2]  cyl   Number of cylinders                      
+       [, 3]  disp  Displacement (cu.in.)                    
+       [, 4]  hp    Gross horsepower                         
+       [, 5]  drat  Rear axle ratio                          
+       [, 6]  wt    Weight (1000 lbs)                        
+       [, 7]  qsec  1/4 mile time                            
+       [, 8]  vs    V/S                                      
+       [, 9]  am    Transmission (0 = automatic, 1 = manual) 
+       [,10]  gear  Number of forward gears                  
+       [,11]  carb  Number of carburetors      -->    
 
 ## Appendix
 <!-- 3 pages, just figures -->

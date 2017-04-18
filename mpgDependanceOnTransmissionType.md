@@ -1,0 +1,108 @@
+--- 
+title: Dependance of Fuel Efficiency on Transmission Type 
+author: "Peter Thompson"
+---
+# Dependance of Fuel Efficiency on Transmission Type 
+
+<!-- Instructions
+
+You work for Motor Trend, a magazine about the automobile industry. Looking at a data set of a collection of cars, they are interested in exploring the relationship between a set of variables and miles per gallon (MPG) (outcome). They are particularly interested in the following two questions:
+
+“Is an automatic or manual transmission better for MPG”
+"Quantify the MPG difference between automatic and manual transmissions"
+Review criterialess
+Peer Grading
+
+The criteria that your classmates will use to evaluate and grade your work are shown below.
+Each criteria is binary: (1 point = criteria met acceptably; 0 points = criteria not met acceptably)
+Criteria
+
+Did the student interpret the coefficients correctly?
+Did the student do some exploratory data analyses?
+Did the student fit multiple models and detail their strategy for model selection?
+Did the student answer the questions of interest or detail why the question(s) is (are) not answerable?
+Did the student do a residual plot and some diagnostics?
+Did the student quantify the uncertainty in their conclusions and/or perform an inference correctly?
+Was the report brief (about 2 pages long) for the main body of the report and no longer than 5 with supporting appendix of figures?
+Did the report include an executive summary?
+Was the report done in Rmd (knitr)? -->
+
+
+## Executive Summary
+
+## stuff
+quick summary
+
+```r
+library(ggplot)
+```
+
+```
+## Error in library(ggplot): there is no package called 'ggplot'
+```
+
+```r
+str(mtcars)
+```
+
+```
+## 'data.frame':	32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+```
+
+```r
+h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(cyl))) + geom_point(size=2) 
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "ggplot"
+```
+
+```r
+print(h)
+```
+
+```
+## Error in print(h): object 'h' not found
+```
+
+mainly interested in mpg vs am.
+
+consider mpg vs am
+mpg vs am + disp
+mpg vs am + disp + cyl
+mpg vs am + disp + cyl + wt
+
+
+```r
+fit<-lm(data=mtcars,mpg ~ factor(am))
+fit2<-lm(data=mtcars,mpg ~ factor(am) + disp   )
+fit3<-lm(data=mtcars,mpg ~ factor(am) + disp  + wt )
+```
+
+
+
+ <!-- [, 1]  mpg   Miles/(US) gallon                        
+       [, 2]  cyl   Number of cylinders                      
+       [, 3]  disp  Displacement (cu.in.)                    
+       [, 4]  hp    Gross horsepower                         
+       [, 5]  drat  Rear axle ratio                          
+       [, 6]  wt    Weight (1000 lbs)                        
+       [, 7]  qsec  1/4 mile time                            
+       [, 8]  vs    V/S                                      
+       [, 9]  am    Transmission (0 = automatic, 1 = manual) 
+       [,10]  gear  Number of forward gears                  
+       [,11]  carb  Number of carburetors      -->    
+
+## Appendix
+<!-- 3 pages, just figures -->
