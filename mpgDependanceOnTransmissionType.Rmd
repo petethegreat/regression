@@ -32,45 +32,88 @@ Was the report done in Rmd (knitr)? -->
 
 ## stuff
 quick summary
+
 ```{r}
 library(ggplot2)
 str(mtcars)
 
-
-h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(am),pch=factor(cyl))) + geom_point(size=2) 
-print(h)
-
 ```
-pair plots - mpg vs (wt,cyl,hp,disp,carb), colour factored on am
-
-am - 0 auto, 1 manual
 
 mainly interested in mpg vs am.
+would expect that horespower, number of cylinders, engine displacement, and vehicle weight would also influence fuel efficiency
+Check the correlation between some of these other (confounding) variables, may not need to include all of them in our model
+
+change this into a table so it takes up less space
+```{r}
+cor(mtcars$wt,mtcars$hp)
+cor(mtcars$wt,mtcars$disp)
+cor(mtcars$wt,mtcars$cyl)
+cor(mtcars$cyl,mtcars$hp)
+cor(mtcars$cyl,mtcars$disp)
+cor(mtcars$hp,mtcars$disp)
+```
+displacement is pretty highly correlated with the other variables, so it may not be needed. Weight has relatively low correlations, so should be considered in addition to other variables. This is not to say that weight has the most impact on mpg, just that it might explain variation in mpg that is not covered by other (more correlated) variables.
 
 consider mpg vs am
 mpg vs am + disp
 mpg vs am + disp + cyl
 mpg vs am + disp + cyl + wt
 
+<!-- Did the student fit multiple models and detail their strategy for model selection? -->
+Fit some models. 
+
 ```{r}
-fit<-lm(data=mtcars,mpg ~ factor(am))
-fit2<-lm(data=mtcars,mpg ~ factor(am) + disp   )
-fit3<-lm(data=mtcars,mpg ~ factor(am) + disp  + wt )
+fit1<-lm(data=mtcars,mpg ~ factor(am))
+fit2<-lm(data=mtcars,mpg ~ factor(am) + wt   )
+fit3<-lm(data=mtcars,mpg ~ factor(am) + wt  + hp )
+fit4<-lm(data=mtcars,mpg ~ factor(am) + wt  + hp + cyl)
+fit5<-lm(data=mtcars,mpg ~ factor(am) + wt  + hp + cyl + disp)
 ```
 
+which model is best? used nested stuff and anova to determine most suitable model. more parameters will always give a better fit, but want to check that there is **significant** improvement in the model for each additional variable. Wald test / F statistic to check this.
+
+```{r}
+anova(fit1,fit2,fit3,fit4,fit5)
+```
+The F statistic comparing fit4 (which includes am, wt, hp, and cyl as regressors) to fit3 (which does not include cyl) is 1.64, which corresponds to a significance of 78.8 %. That is, we are 78.8% confident that fit4 is a better model than fit3. We require 95% significance (or a p value below 0.05), and so we reject fit4 (and subsequently fit5).
+
+plot of  (residuals vs model prediction) is included in appendix. Residuals in this plot do not appear to be systematically distributed, which suggests that there are no obvious problems with our fit.
+
+look at the coefficients for fit3
+
+```{r}
+sum3<-summary(fit3)
+coef(sum3)
+#fit3$coeff
+```
+The coefficient for the am variable is 2.08. That is, our model estimates that manual transmission vehicles (am=1) have fuel efficiency that is 2.08 mpg higher than automatic transmission vehicles, when vehicle weight and horsepower are held constant. However, there is a relatively large degree of uncertainty in this parameter. The p-value for this parameter is 0.14, whereas we require a p-value less than 0.05 for 95% confidence. That is,  **the effect of transmission type on fuel efficiency is not statistically significant at the 95% level**. We cannot reject the null hypothesis (that this model parameter is zero/that transmission type has no effect on fuel efficiency).
 
 
- <!-- [, 1]  mpg   Miles/(US) gallon                        
-       [, 2]  cyl   Number of cylinders                      
-       [, 3]  disp  Displacement (cu.in.)                    
-       [, 4]  hp    Gross horsepower                         
-       [, 5]  drat  Rear axle ratio                          
-       [, 6]  wt    Weight (1000 lbs)                        
-       [, 7]  qsec  1/4 mile time                            
-       [, 8]  vs    V/S                                      
-       [, 9]  am    Transmission (0 = automatic, 1 = manual) 
-       [,10]  gear  Number of forward gears                  
-       [,11]  carb  Number of carburetors      -->    
+ 
+<!-- [, 1]  mpg   Miles/(US) gallon
+[, 2]  cyl   Number of cylinders
+[, 3]  disp  Displacement (cu.in.)
+[, 4]  hp    Gross horsepower
+[, 5]  drat  Rear axle ratio
+[, 6]  wt    Weight (1000 lbs)
+[, 7]  qsec  1/4 mile time
+[, 8]  vs    V/S
+[, 9]  am    Transmission (0 = automatic, 1 = manual)
+[,10]  gear  Number of forward gears
+[,11]  carb  Number of carburetors     -->
 
 ## Appendix
 <!-- 3 pages, just figures -->
+#exploratory plot
+```{r}
+h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(cyl))) + geom_point(size=2) 
+print(h)
+```
+
+some pair plots here, mpg vs stuff, and maybe stuff vs other stuff
+
+```{r}
+fitdata<-data.frame(residuals=resid(fit3),predicted=predict(fit3))
+j<-ggplot(data=fitdata,aes(x=predicted,y=residuals)) + geom_point(colour='purple')
+print(j)
+````
