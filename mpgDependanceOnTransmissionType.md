@@ -34,14 +34,7 @@ Was the report done in Rmd (knitr)? -->
 quick summary
 
 ```r
-library(ggplot)
-```
-
-```
-## Error in library(ggplot): there is no package called 'ggplot'
-```
-
-```r
+library(ggplot2)
 str(mtcars)
 ```
 
@@ -61,20 +54,11 @@ str(mtcars)
 ```
 
 ```r
-h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(cyl))) + geom_point(size=2) 
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "ggplot"
-```
-
-```r
+h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(am),pch=factor(cyl))) + geom_point(size=2) 
 print(h)
 ```
 
-```
-## Error in print(h): object 'h' not found
-```
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png)
 
 mainly interested in mpg vs am.
 

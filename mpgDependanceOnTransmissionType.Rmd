@@ -33,13 +33,17 @@ Was the report done in Rmd (knitr)? -->
 ## stuff
 quick summary
 ```{r}
-library(ggplot)
+library(ggplot2)
 str(mtcars)
 
-h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(cyl))) + geom_point(size=2) 
+
+h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(am),pch=factor(cyl))) + geom_point(size=2) 
 print(h)
 
 ```
+pair plots - mpg vs (wt,cyl,hp,disp,carb), colour factored on am
+
+am - 0 auto, 1 manual
 
 mainly interested in mpg vs am.
 
