@@ -29,7 +29,7 @@ Was the report done in Rmd (knitr)? -->
 
 
 ## Executive Summary
-
+The mtcars dataset was analysed to determine whether manual or automatic cars have better fuel efficiency (higher mpg). A linear model was fit to the data, which included the effects of transmission type, vehicle weight, and horsepower on mpg. The model predicts only a small difference (2.08 mpg) between manual and automatic vehicles (manual transmission being more efficient), but this difference is **not statistically significant**. We conclude that there is no significant difference in fuel efficiency between manual and automatic vehicles when other characteristics are accounted for.  
 ## stuff
 quick summary
 
