@@ -1,5 +1,5 @@
 --- 
-title: Dependance of Fuel Efficiency on Transmission Type 
+title: Effect of Transmission Type on Fuel Efficiency
 author: "Peter Thompson"
 ---
 <!-- # Dependance of Fuel Efficiency on Transmission Type  -->
