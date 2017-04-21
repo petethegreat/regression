@@ -57,6 +57,9 @@ var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/<
 hljs.initHighlightingOnLoad();
 </script>
 
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <style type="text/css">
@@ -316,7 +319,7 @@ coef(sum3)
 
 <h2>Conclusion</h2>
 
-<p>The coefficient for the am variable is 2.08. That is, our model estimates that manual transmission vehicles (am=1) have fuel efficiency that is 2.08 mpg higher than automatic transmission vehicles, when vehicle weight and horsepower are held constant. However, there is a relatively large degree of uncertainty in this parameter. The p-value for this parameter is 0.14, whereas we require a p-value less than 0.05 for 95% confidence. That is,  <strong>the effect of transmission type on fuel efficiency is not statistically significant at the 95% level</strong>. We cannot reject the null hypothesis (that this model parameter is zero/that transmission type has no effect on fuel efficiency).</p>
+<p>The coefficient for the am variable is 2.08 \(\pm\) 1.38 mpg. That is, our model estimates that manual transmission vehicles (am=1) have fuel efficiency that is 2.08 mpg higher than automatic transmission vehicles, when vehicle weight and horsepower are held constant. However, there is a relatively large degree of uncertainty in this parameter. The p-value for this parameter is 0.14, whereas we require a p-value less than 0.05 for 95% confidence. That is,  <strong>the effect of transmission type on fuel efficiency is not statistically significant at the 95% level</strong>. We cannot reject the null hypothesis (that this model parameter is zero/that transmission type has no effect on fuel efficiency).</p>
 
 <!-- [, 1]  mpg   Miles/(US) gallon
 [, 2]  cyl   Number of cylinders
