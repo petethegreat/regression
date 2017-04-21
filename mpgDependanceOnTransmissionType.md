@@ -2,7 +2,7 @@
 title: Dependance of Fuel Efficiency on Transmission Type 
 author: "Peter Thompson"
 ---
-# Dependance of Fuel Efficiency on Transmission Type 
+<!-- # Dependance of Fuel Efficiency on Transmission Type  -->
 
 <!-- Instructions
 
@@ -29,13 +29,13 @@ Was the report done in Rmd (knitr)? -->
 
 
 ## Executive Summary
+The mtcars dataset was analysed to determine whether manual or automatic cars have better fuel efficiency (higher mpg). A linear model was fit to the data, which included the effects of transmission type, vehicle weight, and horsepower on mpg. The model predicts only a small difference (2.08 mpg) between manual and automatic vehicles (manual transmission being more efficient), but this difference is **not statistically significant**. We conclude that there is no significant difference in fuel efficiency between manual and automatic vehicles when other characteristics are accounted for.  
 
-## stuff
-quick summary
+## Analysis
+The mtcars dataset contains the folowing variables:
 
 
 ```r
-library(ggplot2)
 str(mtcars)
 ```
 
@@ -54,68 +54,23 @@ str(mtcars)
 ##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
 ```
 
-mainly interested in mpg vs am.
-would expect that horespower, number of cylinders, engine displacement, and vehicle weight would also influence fuel efficiency
-Check the correlation between some of these other (confounding) variables, may not need to include all of them in our model
+We are mainly interested in fuel efficiency (mpg) vs transmission type (am). Horespower, number of cylinders, engine displacement, and vehicle weight may also influence fuel efficiency. Some of these variables may be highly correlated, so it's possible that they don't all need to be included in the model. An exploratory pair plot (with variable correlations) is included in the appendix.
 
-change this into a table so it takes up less space
 
-```r
+
+<!-- ```{r}
 cor(mtcars$wt,mtcars$hp)
-```
-
-```
-## [1] 0.6587479
-```
-
-```r
 cor(mtcars$wt,mtcars$disp)
-```
-
-```
-## [1] 0.8879799
-```
-
-```r
 cor(mtcars$wt,mtcars$cyl)
-```
-
-```
-## [1] 0.7824958
-```
-
-```r
 cor(mtcars$cyl,mtcars$hp)
-```
-
-```
-## [1] 0.8324475
-```
-
-```r
 cor(mtcars$cyl,mtcars$disp)
-```
-
-```
-## [1] 0.9020329
-```
-
-```r
 cor(mtcars$hp,mtcars$disp)
-```
+``` -->
 
-```
-## [1] 0.7909486
-```
-displacement is pretty highly correlated with the other variables, so it may not be needed. Weight has relatively low correlations, so should be considered in addition to other variables. This is not to say that weight has the most impact on mpg, just that it might explain variation in mpg that is not covered by other (more correlated) variables.
-
-consider mpg vs am
-mpg vs am + disp
-mpg vs am + disp + cyl
-mpg vs am + disp + cyl + wt
+Displacement is pretty highly correlated with the other variables, so it may not be needed. Weight has relatively low correlation, so should be considered in addition to other variables. This is not to say that weight has the most impact on mpg, just that it might explain variation in mpg that is not covered by other (more correlated) variables.
 
 <!-- Did the student fit multiple models and detail their strategy for model selection? -->
-Fit some models. 
+Linear models will be used to predict mpg using combinations of am, wt, hp, cyl, and disp as regressors. The models will be fit in a nested fashion, and then the variance will be analysed to determine the most appropriate model.
 
 
 ```r
@@ -126,7 +81,7 @@ fit4<-lm(data=mtcars,mpg ~ factor(am) + wt  + hp + cyl)
 fit5<-lm(data=mtcars,mpg ~ factor(am) + wt  + hp + cyl + disp)
 ```
 
-which model is best? used nested stuff and anova to determine most suitable model. more parameters will always give a better fit, but want to check that there is **significant** improvement in the model for each additional variable. Wald test / F statistic to check this.
+More model parameters (regressors) will always give a better fit, but we want to check that there is **significant** improvement in the model for each variable added. The F statistic will be used to check this (we will consider improvement significant if it exceeds a 95% threshold).
 
 
 ```r
@@ -150,11 +105,11 @@ anova(fit1,fit2,fit3,fit4,fit5)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
-The F statistic comparing fit4 (which includes am, wt, hp, and cyl as regressors) to fit3 (which does not include cyl) is 1.64, which corresponds to a significance of 78.8 %. That is, we are 78.8% confident that fit4 is a better model than fit3. We require 95% significance (or a p value below 0.05), and so we reject fit4 (and subsequently fit5).
+The F statistic comparing fit4 (which includes am, wt, hp, and cyl as regressors) to fit3 (which does not include cyl) is 1.64, which corresponds to a significance of 78.8 %. That is, we are 78.8% confident that fit4 is a better model than fit3. As this is less than the 95% required, we reject fit4 (and subsequently fit5).
 
-plot of  (residuals vs model prediction) is included in appendix. Residuals in this plot do not appear to be systematically distributed, which suggests that there are no obvious problems with our fit.
+A plot of the residuals vs the fit3 model predictions is included in appendix. Residuals in this plot do not appear to be systematically distributed, which suggests that there are no obvious problems with our fit. 
 
-look at the coefficients for fit3
+The coefficients of the model describe the effect of the regression variables on fuel efficiency. Specifically, the am coefficient gives the change fuel efficiency when the transmission changes from automatic (am=0) to manual (am=1).
 
 
 ```r
@@ -170,9 +125,7 @@ coef(sum3)
 ## hp          -0.03747873 0.009605422 -3.901830 5.464023e-04
 ```
 
-```r
-#fit3$coeff
-```
+## Conclusion
 The coefficient for the am variable is 2.08. That is, our model estimates that manual transmission vehicles (am=1) have fuel efficiency that is 2.08 mpg higher than automatic transmission vehicles, when vehicle weight and horsepower are held constant. However, there is a relatively large degree of uncertainty in this parameter. The p-value for this parameter is 0.14, whereas we require a p-value less than 0.05 for 95% confidence. That is,  **the effect of transmission type on fuel efficiency is not statistically significant at the 95% level**. We cannot reject the null hypothesis (that this model parameter is zero/that transmission type has no effect on fuel efficiency).
 
 
@@ -191,22 +144,53 @@ The coefficient for the am variable is 2.08. That is, our model estimates that m
 
 ## Appendix
 <!-- 3 pages, just figures -->
-#exploratory plot
+exploratory pair plot
 
 ```r
-h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(cyl))) + geom_point(size=2) 
+library(ggplot2)
+library(GGally)
+```
+
+```
+## Warning: replacing previous import by 'utils::capture.output' when loading
+## 'GGally'
+```
+
+```
+## Warning: replacing previous import by 'utils::head' when loading 'GGally'
+```
+
+```
+## Warning: replacing previous import by 'utils::installed.packages' when
+## loading 'GGally'
+```
+
+```
+## Warning: replacing previous import by 'utils::str' when loading 'GGally'
+```
+
+```r
+k<-ggpairs(data=mtcars,columns=c(1,2,4,6,9),mapping=aes(colour='red'))
+print(k)
+```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+
+<!-- ```{r}
+library(ggplot2)
+h<-ggplot(data=mtcars,aes(y=mpg,x=wt,colour=factor(am),pch=factor(cyl) )) + geom_point(size=2) + labs(x='vehicle weight (1000 lbs)',y='fuel efficiency (mpg)',colour='transmission',pch='cylinders',title='fuel efficiency vs vehicle weight')
 print(h)
+``` -->
+
+residual plot
+
+```r
+fitdata<-data.frame(residuals=resid(fit3),predicted=predict(fit3))
+j<-ggplot(data=fitdata,aes(x=predicted,y=residuals)) + geom_point(colour='purple') + labs(title='model residuals vs predicted mpg value')
+print(j)
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
 
-some pair plots here, mpg vs stuff, and maybe stuff vs other stuff
 
 
-```r
-fitdata<-data.frame(residuals=resid(fit3),predicted=predict(fit3))
-j<-ggplot(data=fitdata,aes(x=predicted,y=residuals)) + geom_point(colour='purple')
-print(j)
-```
-
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
